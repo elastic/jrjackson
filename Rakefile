@@ -56,11 +56,15 @@ end
 desc "Build native artifacts (alias of compile, used by the publisher action)"
 task :vendor => :compile
 
-# The publisher action runs `rake publish_gem`. Build through :package so the gem
-# is compiled and verify_generated_files runs before we push. Uses the exact
-# version filename, not a glob, so a stale pkg/ gem cannot be pushed by mistake.
+# The logstash-plugins/publisher "Gem Publish" action defaults to `rake release`.
+# Replace Bundler's release task, which does a bare `gem build` with no Maven
+# compile, so releasing needs no custom task argument. Build through :package so
+# the gem is compiled and verify_generated_files runs before we push. Uses the
+# exact version filename, not a glob, so a stale pkg/ gem cannot be pushed by
+# mistake.
+Rake::Task[:release].clear
 desc "Build the gem, push to RubyGems, then tag the repo"
-task :publish_gem => :package do
+task :release => :package do
   $LOAD_PATH.unshift(File.expand_path('lib', __dir__))
   require 'jrjackson/build_info'
   version = JrJackson::BuildInfo.version
@@ -70,3 +74,6 @@ task :publish_gem => :package do
   sh "git tag v#{version}"
   sh "git push origin v#{version}"
 end
+
+# Backwards-compatible alias for the previous task name.
+task :publish_gem => :release
