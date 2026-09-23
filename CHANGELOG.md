@@ -1,3 +1,6 @@
+## 0.5.4
+  Upgrade jackson and jackson-databind to v2.21.7
+
 ## 0.5.3
   Upgrade jackson and jackson-databind to v2.21.6
 
