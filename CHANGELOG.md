@@ -1,3 +1,6 @@
+## 0.5.6
+  Upgrade jackson and jackson-databind to v2.21.8
+
 ## 0.5.5
   Fix JrJackson::ParseError on JRuby 10.1, which raised NoSuchMethodError instead
   Add JRuby 10.1 to CI
